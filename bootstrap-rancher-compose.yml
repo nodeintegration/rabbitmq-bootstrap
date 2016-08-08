@@ -1,0 +1,7 @@
+rabbitmq-bootstrap:
+  metadata:
+    policies:
+      ha-all:
+        pattern: '^ha\.'
+        #definition: '{"ha-mode":"exactly", "ha-params":2,"ha-sync-mode":"automatic"}'
+        definition: '"definition":{"ha-mode":"all"}'

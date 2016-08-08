@@ -1,0 +1,14 @@
+rabbitmq:
+  scale: 1
+  metadata:
+    rabbitmq: &id001
+      config:
+        node.name: $${HOSTNAME}
+rabbitmq-base:
+  scale: 1
+  metadata:
+    rabbitmq: *id001
+rabbitmq-datavolume:
+  scale: 1
+  metadata:
+    rabbitmq: *id001
