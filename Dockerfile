@@ -8,4 +8,4 @@ ENV RANCHER_LABEL map-public-http
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/bin/true"]
+CMD ["bootstrap"]
