@@ -2,13 +2,14 @@
 set -e
 
 
-echo "Starting up..."
+echo "[INFO]: Starting up..."
 if [ "${1}" = "bootstrap" ]; then
   POLICIES=$(curl -sS http://${RANCHER_API_HOST}/${RANCHER_API_VERSION}/self/service/metadata/policies)
   
   if ( "${POLICIES}" = "Not found" ); then
     echo "[INFO]: cant find any policies...skipping"
   else
+    echo "[DEBUG]: found policies: ${POLICIES}"
     for p in ${POLICIES}; do
       # strip the tailing slash
       policy=$(echo "${p}" | sed -e 's/\///g')
