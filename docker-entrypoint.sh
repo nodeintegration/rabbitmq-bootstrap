@@ -9,12 +9,12 @@ if [ "${1}" = "bootstrap" ]; then
   if ( "${POLICIES}" = "Not found" ); then
     echo "[INFO]: cant find any policies...skipping"
   else
-    for policy in $POLICIES; do
+    for p in ${POLICIES}; do
       # strip the tailing slash
-      policy=$(echo "${policy}" | cut -d '/' -f 1)
+      policy=$(echo "${p}" | sed -e 's/\///g')
       echo "[INFO]: creating policy: ${policy}"
-      pattern=$(curl -sS http://${RANCHER_API_HOST}/${RANCHER_API_VERSION}/self/service/metadata/policies/$policy/pattern)
-      definition=$(curl -sS http://${RANCHER_API_HOST}/${RANCHER_API_VERSION}/self/service/metadata/policies/$policy/definition)
+      pattern=$(curl -sS http://${RANCHER_API_HOST}/${RANCHER_API_VERSION}/self/service/metadata/policies/${policy}/pattern)
+      definition=$(curl -sS http://${RANCHER_API_HOST}/${RANCHER_API_VERSION}/self/service/metadata/policies/${policy}/definition)
       json=$(cat <<EOF
 {
   "pattern":"${pattern}",
@@ -30,7 +30,7 @@ EOF
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d "${json}" \
-        -i -u "guest:guest" \
+        -u "guest:guest" \
         http://rabbitmq:15672/api/policies/%2f/${policy})
       echo "[INFO]: Status code: $STATUSCODE"
       if [[ $STATUSCODE -eq 204 || $STATUSCODE -eq 200 ]]; then
@@ -42,6 +42,6 @@ EOF
     done
   fi
 
+else
+  exec $@
 fi
-
-exec $@
